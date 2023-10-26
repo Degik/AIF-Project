@@ -6,11 +6,16 @@ from utils import get_valid_moves
 from typing import Tuple, List
 
 def build_path(parent: dict, target: Tuple[int, int]) -> List[Tuple[int, int]]:
-    path = ...
+    #Costruisco il path vuoto
+    path = []
+    #Controllo che il target non sia nullo
     while target is not None:
-        ...
-        target = ...
-    ...
+        #Aggiungo il target al path (in coda alla lista)
+        path.append(target)
+        #Il target ovvero il precedente elemento del path per raggiungere target sarebbe il parent di target
+        target = parent[target]
+    #Alla fine del procedimento inverto e restituisco la lista
+    path.reverse()
     return path
 
 def bfs(game_map: np.ndarray, start: Tuple[int, int], target: Tuple[int, int]) -> List[Tuple[int, int]]:
