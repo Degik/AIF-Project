@@ -119,7 +119,6 @@ def a_star(game_map: np.ndarray, start: Tuple[int, int], target: Tuple[int, int]
                 continue
             # compute neighbor g, h and f values
             # Ricalcolo g,h e f
-            # G 
             neighbor_g = 1 + current_cost
             neighbor_h = h(current_cost, target)
             neighbor_f = neighbor_g + neighbor_h
