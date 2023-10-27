@@ -18,6 +18,11 @@ def build_path(parent: dict, target: Tuple[int, int]) -> List[Tuple[int, int]]:
     path.reverse()
     return path
 
+
+#V: Numero di vertici nel grafo , E: Numero di archi nel grafo
+#Time Complexity: O(V + E)
+#Ref:  https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/
+
 def bfs(game_map: np.ndarray, start: Tuple[int, int], target: Tuple[int, int]) -> List[Tuple[int, int]]:
     # Create a queue for BFS and mark the start node as visited
     #Dichiariamo la lista vuota queue con il metodo deque
@@ -66,50 +71,73 @@ def bfs(game_map: np.ndarray, start: Tuple[int, int], target: Tuple[int, int]) -
 
 # ---------------------------------------------
 
+#Ref: https://www.geeksforgeeks.org/a-search-algorithm/
+
 def a_star(game_map: np.ndarray, start: Tuple[int, int], target: Tuple[int, int], h: callable) -> List[Tuple[int, int]]:
     # initialize open and close list
+    #La open list contiene la lista dei nodi che deveno essere visitati
+    #Viene creata come PriorityQueue perché ognuno di questi avrà un peso f (più basso meglio è)
     open_list = PriorityQueue()
+    #Con la close list vengono segnati i nodi già esplorati e tutti i loro figli
     close_list = []
     # additional dict which maintains the nodes in the open list for an easier access and check
+    #Con questa teniamo conto del costo g di ogni nodo
     support_list = {}
 
-    starting_state_g = ...
-    starting_state_h = ...
-    starting_state_f = ...
+    #Impostiamo il costo
+    # g = il costo dal nodo di partenza a quello corrente, quindi 0
+    starting_state_g = 0
+    # h = stima del costo dal nodo corrente al nodo target, lo impostiamo a start (siamo li ora!!)
+    starting_state_h = h(start, target)
+    #f = il costo del nodo (f = g + h)
+    starting_state_f = starting_state_g + starting_state_h
 
+    #Inizializzo la lista con il nodo iniziale (start)
+    #Aggiungo il nodo start e ne salvo la f, e la coppia (start e costo g)
     open_list.put((starting_state_f, (start, starting_state_g)))
     support_list[start] = starting_state_g
     parent = {start: None}
 
     while not open_list.empty():
         # get the node with lowest f
-        ... = open_list.get()
+        #Prendiamo come current il nodo con la f minore
+        _ , (current, current_cost) = open_list.get()
         # add the node to the close list
+        #Mettiamo la current nella close list
         close_list.append(current)
 
+        #Se il nodo corrente è il target
         if current == target:
             print("Target found!")
             path = build_path(parent, target)
             return path
-
+        #Controllo se il nodo vicino è un nodo valido
         for neighbor in get_valid_moves(game_map, current):
             # check if neighbor in close list, if so continue
-            ...
-
+            # Se il nodo vicino è in close list allora è stato già visitato e riparto con il ciclo
+            if neighbor in close_list:
+                continue
             # compute neighbor g, h and f values
-            neighbor_g = ...
-            neighbor_h = ...
-            neighbor_f = ...
+            # Ricalcolo g,h e f
+            # G 
+            neighbor_g = 1 + current_cost
+            neighbor_h = h(current_cost, target)
+            neighbor_f = neighbor_g + neighbor_h
             parent[neighbor] = current
             neighbor_entry = (neighbor_f, (neighbor, neighbor_g))
             # if neighbor in open_list
+            #Controlliamo se il nodo ha già un costo g
             if neighbor in support_list.keys():
                 # if neighbor_g is greater or equal to the one in the open list, continue
-                ...
+                #Controlliamo se il corrispondente costo g è maggiore di quello già esistente
+                if neighbor_g >= support_list[neighbor]:
+                    continue
 
             # add neighbor to open list and update support_list
-            ...
-            support_list[...] = ...
+            #Aggiungiamo il nodo alla open list
+            open_list.put(neighbor_entry)
+            #Viene salvata la nuova g per il nodo
+            support_list[neighbor] = neighbor_g
 
     print("Target node not found!")
     return None
