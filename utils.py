@@ -7,7 +7,11 @@ def get_player_location(game_map: np.ndarray, symbol : str = "@") -> Tuple[int, 
     x, y = np.where(game_map == ord(symbol))
     return (x[0], y[0])
 
-def get_target_location(game_map: np.ndarray, symbol : str = ">") -> Tuple[int, int]:
+
+# > gate di uscita
+# % mela
+# ) ascia
+def get_target_location(game_map: np.ndarray, symbol : str = "%") -> Tuple[int, int]:
     x, y = np.where(game_map == ord(symbol))
     return (x[0], y[0])
 
