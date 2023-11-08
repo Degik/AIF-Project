@@ -49,7 +49,12 @@ def startSearch(env, game_map, prolog):
     prolog.retractall("agent(_,_)")
     prolog.retractall("apple(_,_)")
     player = utils.get_player_location(game_map)
-    target = utils.get_target_location(game_map)
+    try:
+        target = utils.get_target_location(game_map)
+    except Exception as e:
+        print("Simbolo @ mancante")
+        return None
+    
     prolog.assertz(f"agent({player[0]},{player[1]})")
     prolog.assertz(f"apple({target[0]},{target[1]})")
     print(f"agent({player[0]},{player[1]})")
