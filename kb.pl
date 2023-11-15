@@ -103,7 +103,7 @@ action(move_towards_enemy(Direction)) :- \+ position(apple, comestible, _, _), p
 %   - next step direction is a safe direction
 action(get_to_weapon(Direction)) :- \+ position(apple, comestible, _, _), position(agent, _, AgentX, AgentY), position(enemy, Type, EnemyX, EnemyY),
                                     wields_weapon(agent, Weapon), \+ is_beatable(Type, Weapon), position(weapon, tsurugi, WeaponX, WeaponY),
-                                    next_step(AgentX, AgentY, WeaponX, WeaponY, D), safe_direction(AgentX, AgentY, D, Direction)
+                                    next_step(AgentX, AgentY, WeaponX, WeaponY, D), safe_direction(AgentX, AgentY, D, Direction).
 
 % -----------------------------------------------------------------------------------------------
 
